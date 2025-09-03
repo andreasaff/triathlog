@@ -2,7 +2,7 @@
 ## Context
 Triathlon is a very comprehensive sport. Including multiple disciplines (swimming, biking and running) at once. Getting prepared for a triathlon race requires a great amount of training.
 
-Getting all of this traning fit in your daily schedule calls for great planning. _Triathlog_ aims to solve this issue by allowing users to plan there traning week ahead and keeping track of traningblocks done or yet to be completed.
+Getting all of this traning fit in your daily schedule calls for great planning. _Triathlog_ aims to solve this issue by allowing users to plan there traning week ahead and keeping track of traning sessions done or yet to be completed.
 
 ## Techstack
 - Fullstack Framework: [SvelteKit](https://svelte.dev/docs/kit/introduction)
@@ -50,7 +50,15 @@ As a user, I want to be able to mark a traning block as completed.
 - A visual cofirmation is shown, confirming the "marked as done" state
 - The "marked as done" state is persisted in the data persistance layer
 
-### Story 5 - Recurring traning blocks (_Could_)
+### Story 5 - Update existing traning blocks (_Could_)
+As a user, I want to be able to edit existing traning blocks.
+
+**Acceptance Criteria**
+- A user can change the description of a traning block
+- A user can change the duration of a traning block
+- The change is reflected in the data persistance layer
+
+### Story 6 - Recurring traning blocks (_Could_)
 As a user, I want to be able to make certain traning blocks recurring.
 
 **Acceptance Criteria**
@@ -58,7 +66,7 @@ As a user, I want to be able to make certain traning blocks recurring.
 - Supported intervals e.g. daily,weekly or monthly can be set
 - A max number of recurrences can be set. e.g 10
 
-### Story 6 - Stats (_Could_)
+### Story 7 - Stats (_Could_)
 As a user, I want to see some stats about my planned and completed traning blocks.
 
 **Acceptance Criteria**
