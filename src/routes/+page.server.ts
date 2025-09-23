@@ -23,16 +23,12 @@ export const actions: Actions = {
             });
         }
 
-        console.log(form)
-
-        let date = new Date(form.data.date)
-        let duration = parseInt(form.data.duration);
-        let startDateTime = new Date(date.setTime(parseInt(form.data.startTime) * 60 * 1000))
-        let endDateTime = new Date(date.setTime(parseInt((form.data.startTime) + duration) * 60 * 1000))
+        let formData = form.data
+        let date = new Date(formData.date)
 
         let id = uuidv4()
 
-        createTraning(id, form.data.type, startDateTime, endDateTime, duration, form.data.description)
+        createTraning(id, formData.type, date, parseInt(formData.startTime), parseInt(formData.duration), formData.description)
 
         return {
             form,

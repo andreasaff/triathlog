@@ -4,9 +4,9 @@ import { isodate } from './types/isodate'
 export const traning = sqliteTable('traning', {
 	id: text('id').primaryKey(),
 	type: text('type', { enum: ['Running', 'Cycling', 'Swimming', 'Strength'] }).notNull(),
-	start: isodate('start').notNull(),
-	end: isodate('end'),
-	duration: integer('duration').notNull(), // duration in minutes
+	date: isodate().notNull(),
+	startMin: integer('start_min').notNull(), // start time in minutes since midnight
+	durationMin: integer('duration_min').notNull(), // duration in minutes
 	description: text('description'),
-	iscompleted: integer('iscompleted', { mode: 'boolean' }).notNull().default(false)
+	isCompleted: integer('is_completed', { mode: 'boolean' }).notNull().default(false)
 });

@@ -34,29 +34,8 @@
 	}
 
 	// dialog state
-	let isOpen = $state(false);
-
-	// needed as long as we don't write to db
-	function addEvent(eventStartTime: Date, hour: number) {
-		console.log('Adding event at ', eventStartTime);
-		//TODO: just a quick and dirty way to test the concept.
-		const eventStartTimeWithHour = new Date(eventStartTime);
-		eventStartTimeWithHour.setHours(hour);
-		eventStartTimeWithHour.setMinutes(25);
-		eventStartTimeWithHour.setSeconds(0);
-		eventStartTimeWithHour.setMilliseconds(0);
-
-		const title = prompt('Event title:');
-		if (title) {
-			const event: Event = {
-				title,
-				start: new Date(eventStartTimeWithHour),
-				end: new Date(eventStartTimeWithHour.getTime() + 60 * 60 * 1000) // getTime is in milliseconds + 60 * 60 * 1000 = 1 hour
-			};
-			events = [...events, event];
-			console.log('Current events:', events);
-		}
-	}
+	let isOpen: boolean = $state(false);
+	let fieldDate: Date = $state(new Date());
 </script>
 
 <EventCalendarNav
@@ -80,7 +59,13 @@
 			{#each hours as _, hourIndex}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
-				<div class="day-cell" onclick={() => (isOpen = true)}></div>
+				<div
+					class="day-cell"
+					onclick={() => {
+						fieldDate = day;
+						isOpen = true;
+					}}
+				></div>
 			{/each}
 
 			<!-- render events -->
@@ -106,7 +91,7 @@
 </div>
 
 <EventCalendarDialog title="You opend me via cell" description="abc" bind:open={isOpen}>
-	{@render children('Peter')}
+	{@render children(fieldDate)}
 </EventCalendarDialog>
 
 <style>
