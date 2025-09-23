@@ -1,14 +1,14 @@
 <script lang="ts">
-    let { days } = $props();
+    let { dayDates } = $props();
 </script>
 
 <!--- <div class="grid gap-4" style="grid-template-columns: repeat({days.length}, 1fr);"> -->
 <div class="header">
     <div></div>
-    {#each days as day}
+    {#each dayDates as dayDate}
         <div>
-            {day.toLocaleDateString('en-US', { weekday: 'short' })}<br>
-            {day.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            {dayDate.toLocaleDateString('en-US', { weekday: 'short' })}<br>
+            {dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
         </div>
     {/each}
 </div>
