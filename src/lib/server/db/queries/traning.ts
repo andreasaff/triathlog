@@ -12,3 +12,9 @@ export async function createTraning(id: string, type: 'Running' | 'Cycling' | 'S
     }).returning();
     return result;
 }
+
+export async function getAllTraning() {
+    return await db.select().from(traning)
+}
+
+export type Traning = typeof traning.$inferSelect

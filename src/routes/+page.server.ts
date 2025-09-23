@@ -3,12 +3,16 @@ import { superValidate } from 'sveltekit-superforms';
 import { traningFormSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
-import { createTraning } from '$lib/server/db/queries/traning';
+import { createTraning, getAllTraning } from '$lib/server/db/queries/traning';
 import { v4 as uuidv4 } from 'uuid'
 
 export const load: PageServerLoad = async () => {
+    let tranings = await getAllTraning()
+    let form = await superValidate(zod(traningFormSchema))
+
     return {
-        form: await superValidate(zod(traningFormSchema)),
+        tranings: tranings,
+        form: form
     };
 };
 

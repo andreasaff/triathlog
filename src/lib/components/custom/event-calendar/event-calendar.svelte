@@ -1,13 +1,11 @@
 <script lang="ts">
+	import type { Traning } from '$lib/server/db/queries/traning';
 	import EventCalendarDialog from './event-calendar-dialog.svelte';
 	import EventCalendarHeader from './event-calendar-header.svelte';
 	import EventCalendarNav from './event-calendar-nav.svelte';
 	import type { Event } from './event.ts';
 
-	let { startDate, children } = $props();
-
-	//eventstore
-	let events: Event[] = $state([]);
+	let { startDate, events, children } = $props();
 
 	//first day shown in the calendar
 	let currentWeeksStartDate = $state(startDate);
@@ -69,21 +67,21 @@
 			{/each}
 
 			<!-- render events -->
-			{#each events.filter((event: Event) => event.start.toDateString() === day.toDateString()) as event (event.title)}
+			{#each events.filter((event: Traning) => event.date.toDateString() === day.toDateString()) as event (event.id)}
 				<div
 					class="event"
 					style="
-                            top: {event.start.getHours() * 60 + event.start.getMinutes()}px; 
-                            height: {(event.end.getTime() - event.start.getTime()) / (1000 * 60)}px;
+                            top: {event.startMin}px; 
+                            height: {event.durationMin}px;
                         "
 				>
-					{event.title} <br />
-					<small
+					{event.type} <br />
+					<!-- <small
 						>{event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {event.end.toLocaleTimeString(
 							[],
 							{ hour: '2-digit', minute: '2-digit' }
 						)}</small
-					>
+					> -->
 				</div>
 			{/each}
 		</div>
