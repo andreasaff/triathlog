@@ -6,7 +6,10 @@ Getting all of this traning fit in your daily schedule calls for great planning.
 
 ## Techstack
 - Fullstack Framework: [SvelteKit](https://svelte.dev/docs/kit/introduction)
-- TBD
+- UI Library: [Shadcn-Svelte](https://shadcn-svelte.com/)
+- CSS Framework: [TailwindCSS](https://tailwindcss.com/)
+- ORM: [Drizzle](https://orm.drizzle.team/)
+- DB: [SQLite](https://sqlite.org/)
 
 ## Requirements
 ### Story 1 - Add training block (_Must_)
