@@ -8,7 +8,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { traningFormSchema, type TraningFormSchema } from './schema';
 
-	let { data, date }: { data: { form: SuperValidated<Infer<TraningFormSchema>> }; date: Date } = $props();
+	let { data, date }: { data: { form: SuperValidated<Infer<TraningFormSchema>> }; date: Date } =
+		$props();
 
 	const form = superForm(data.form, {
 		validators: zodClient(traningFormSchema)
@@ -18,36 +19,35 @@
 
 	// time and duration options
 	const maxDurationHours = 8;
-	
 
 	//start times
 	type Times = {
-		digital: string
-		minutes: number
-	}
-
+		digital: string;
+		minutes: number;
+	};
 
 	const times: Times[] = [];
 	for (let hour = 0; hour < 24; hour++) {
 		for (let minute = 0; minute < 60; minute += 15) {
 			const hh = String(hour).padStart(2, '0');
 			const mm = String(minute).padStart(2, '0');
-			times.push({digital: `${hh}:${mm}`, minutes: (60 * hour + minute)});
+			times.push({ digital: `${hh}:${mm}`, minutes: 60 * hour + minute });
 		}
-	} 
+	}
 
 	//duration
 	let durations: Times[] = $state([]);
 
 	$effect(() => {
-		const setStartTime = $formData.startTime
-		if(!setStartTime){
-			durations = times.slice(1, 4 * maxDurationHours + 1)
+		const setStartTime = $formData.startTime;
+		if (!setStartTime) {
+			durations = times.slice(1, 4 * maxDurationHours + 1);
 		} else {
-			durations = times.filter((t) => {return t.minutes + parseInt(setStartTime) <= 1440 && t.minutes <= 480})
+			durations = times.filter((t) => {
+				return t.minutes + parseInt(setStartTime) <= 1440 && t.minutes <= 480;
+			});
 		}
-	})
-
+	});
 </script>
 
 <Dialog.Root>
@@ -66,7 +66,7 @@
 		</Dialog.Header>
 		<form method="POST" action="?/addTraning" use:enhance>
 			<!--date -->
-			<input type="hidden" value={date.toISOString()} name="date"/>
+			<input type="hidden" value={date.toISOString()} name="date" />
 			<!-- traning type -->
 			<Form.Field {form} name="type">
 				<Form.Control>
@@ -94,9 +94,11 @@
 					{#snippet children({ props })}
 						<Form.Label>Start at</Form.Label>
 						<Select.Root type="single" bind:value={$formData.startTime} name={props.name}>
-						<!-- <Select.Root type="single" bind:value={() => {date.setTime(parseInt($formData.startTime) * 60 * 1000); return date.toISOString() }, (v) => {$formData.startTime = v;}} name={props.name}> -->
+							<!-- <Select.Root type="single" bind:value={() => {date.setTime(parseInt($formData.startTime) * 60 * 1000); return date.toISOString() }, (v) => {$formData.startTime = v;}} name={props.name}> -->
 							<Select.Trigger {...props}>
-								{$formData.startTime ? times.find(t => t.minutes.toString() === $formData.startTime)?.digital : 'Select time...'}
+								{$formData.startTime
+									? times.find((t) => t.minutes.toString() === $formData.startTime)?.digital
+									: 'Select time...'}
 								<!-- {currentState ? times.find(t => t.minutes.toString() === currentState)?.digital : 'Select time...'} -->
 							</Select.Trigger>
 							<Select.Content class="overflow:auto max-h-[200px]">
@@ -117,7 +119,9 @@
 						<Form.Label>Duration</Form.Label>
 						<Select.Root type="single" bind:value={$formData.duration} name={props.name}>
 							<Select.Trigger {...props}>
-								{$formData.duration? durations.find(d => d.minutes.toString() === $formData.duration)?.digital : 'Select time...'}
+								{$formData.duration
+									? durations.find((d) => d.minutes.toString() === $formData.duration)?.digital
+									: 'Select time...'}
 							</Select.Trigger>
 							<Select.Content class="overflow:auto max-h-[200px]">
 								{#each durations as duration}

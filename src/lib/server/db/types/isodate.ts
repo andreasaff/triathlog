@@ -13,7 +13,7 @@ export const isodate = customType<
     toDriver(value: Date): string {
         return value.toISOString()
     },
-    
+
     fromDriver(value: string): Date {
         return new Date(value);
     }
