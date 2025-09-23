@@ -1,14 +1,15 @@
 <script lang="ts">
+	import EventCalendarDialog from './event-calendar-dialog.svelte';
 	import EventCalendarHeader from './event-calendar-header.svelte';
 	import EventCalendarNav from './event-calendar-nav.svelte';
 	import type { Event } from './event.ts';
 
-	let { startDate } = $props();
+	let { startDate, children } = $props();
 
 	//eventstore
 	let events: Event[] = $state([]);
 
-	//current weeks monday
+	//first day shown in the calendar
 	let currentWeeksStartDate = $state(startDate);
 
 	//days and hours for the calendar grid
@@ -31,6 +32,9 @@
 		date.setDate(date.getDate() + offset);
 		return date;
 	}
+
+	// dialog state
+	let isOpen = $state(false);
 
 	// needed as long as we don't write to db
 	function addEvent(eventStartTime: Date, hour: number) {
@@ -76,7 +80,7 @@
 			{#each hours as _, hourIndex}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
-				<div class="day-cell" onclick={() => addEvent(day, hourIndex)}></div>
+				<div class="day-cell" onclick={() => (isOpen = true)}></div>
 			{/each}
 
 			<!-- render events -->
@@ -100,6 +104,10 @@
 		</div>
 	{/each}
 </div>
+
+<EventCalendarDialog title="You opend me via cell" description="abc" bind:open={isOpen}>
+	{@render children('Peter')}
+</EventCalendarDialog>
 
 <style>
 	.calendar {

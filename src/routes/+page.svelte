@@ -13,5 +13,10 @@
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
 
-<EventCalendar {startDate} />
+<EventCalendar {startDate}>
+	{#snippet children(name: string)}
+		<p>Hello {name}!</p>
+	{/snippet}
+</EventCalendar>
+
 <EventCalendarDialog {data} date={new Date()} />
