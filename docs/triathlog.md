@@ -2,23 +2,23 @@
 ## Context
 Triathlon is a very comprehensive sport. Including multiple disciplines (swimming, biking and running) at once. Getting prepared for a triathlon race requires a great amount of training.
 
-Getting all of this traning fit in your daily schedule calls for great planning. _Triathlog_ aims to solve this issue by allowing users to plan there traning week ahead and keeping track of traning sessions done or yet to be completed.
+Getting all of this training to fit in your daily schedule calls for great planning. _Triathlog_ aims to solve this issue by allowing users to plan their traning week ahead and keep track of training sessions done or yet to be completed.
 
 ## Techstack
-- Fullstack Framework: [SvelteKit](https://svelte.dev/docs/kit/introduction)
-- UI Library: [Shadcn-Svelte](https://shadcn-svelte.com/)
+- Full-Stack Framework: [SvelteKit](https://svelte.dev/docs/kit/introduction)
+- UI Library: [shadcn-svelte](https://shadcn-svelte.com/)
 - CSS Framework: [TailwindCSS](https://tailwindcss.com/)
 - ORM: [Drizzle](https://orm.drizzle.team/)
 - DB: [SQLite](https://sqlite.org/)
 
 ## Requirements
 ### Story 1 - Add training block (_Must_)
-As a user, I want to add a triathlon specific traning block
+As a user, I want to add a triathlon specific training block
 
 **Acceptance Criteria**
-- A tranings block should atleast include the following information
+- A trainings block should at least include the following information
     - Type
-        e.g. Swim/Bike/Run/Strenght 
+        e.g. Swim/Bike/Run/Strength 
     - Date
         e.g. 03.09.2025
     - Start Time
@@ -27,58 +27,58 @@ As a user, I want to add a triathlon specific traning block
         e.g. 2:30h
     - Description (optional)
         e.g. 8x400m sprints
-- A tranings block can only be safed once all required fields have been filled out.
-- Serverside data persistence must be guaranteed.
+- A trainings block can only be saved once all required fields have been filled out.
+- Server-side data persistence must be guaranteed.
 
 ### Story 2 - Weekly overview (_Must_)
-As a user, I want to have see all my traning blocks planned for the week.
+As a user, I want to see all my training blocks planned for the week.
 
 **Acceptance Criteria**
-- All traning blocks added for the current week can be seen in the overview.
-- The traning blocks are sorted by days.
-- If multiple traning blocks are planned for the day, they are further sorted by time.
+- All training blocks added for the current week can be seen in the overview.
+- The training blocks are sorted by days.
+- If multiple training blocks are planned for the day, they are further sorted by time.
 
-### Story 3 - Delete previously added traning blocks (_Must_)
-As a user, I want to be able to delete a previously added traning block.
+### Story 3 - Delete previously added training blocks (_Must_)
+As a user, I want to be able to delete a previously added training block.
 
 **Acceptance Criteria**
-- A user can delete a previously added traning block one at a time.
-- Removed tranings blocks are deleted or invalidated from the data persistance layer
+- A user can delete a previously added training block one at a time.
+- Removed trainings blocks are deleted or invalidated from the data persistence layer
 
 ### Story 4 - Mark as done (_Should_)
-As a user, I want to be able to mark a traning block as completed.
+As a user, I want to be able to mark a training block as completed.
 
 **Acceptance Criteria**
-- A user can mark a planned traning block as done one at a time
-- A visual cofirmation is shown, confirming the "marked as done" state
-- The "marked as done" state is persisted in the data persistance layer
+- A user can mark a planned training block as done one at a time
+- A visual confirmation is shown, confirming the "marked as done" state
+- The "marked as done" state is persisted in the data persistence layer
 
-### Story 5 - Update existing traning blocks (_Could_)
-As a user, I want to be able to edit existing traning blocks.
-
-**Acceptance Criteria**
-- A user can change the description of a traning block
-- A user can change the duration of a traning block
-- The change is reflected in the data persistance layer
-
-### Story 6 - Recurring traning blocks (_Could_)
-As a user, I want to be able to make certain traning blocks recurring.
+### Story 5 - Update existing training blocks (_Could_)
+As a user, I want to be able to edit existing training blocks.
 
 **Acceptance Criteria**
-- User can make a traning block reccur.
-- Supported intervals e.g. daily,weekly or monthly can be set
+- A user can change the description of a training block
+- A user can change the duration of a training block
+- The change is reflected in the data persistence layer
+
+### Story 6 - Recurring Training Blocks (_Could_)
+As a user, I want to be able to make certain training blocks recurring.
+
+**Acceptance Criteria**
+- User can make a training block recur.
+- Supported intervals, e.g. daily,weekly or monthly, can be set
 - A max number of recurrences can be set. e.g 10
 
 ### Story 7 - Stats (_Could_)
-As a user, I want to see some stats about my planned and completed traning blocks.
+As a user, I want to see some stats about my planned and completed training blocks.
 
 **Acceptance Criteria**
-- Stats include total number of planned traning sessions for the week
-- Stats include total planned traning time for the week
-- Stats include already completed number of traning sessions for the week
-- Stats include already completed traning time for the week
+- Stats include the total number of planned training sessions for the week
+- Stats include total planned training time for the week
+- Stats include the already completed number of training sessions for the week
+- Stats include already completed training time for the week
 
 ## Quality Features
 - Functionality should be validated using automated unit & integration tests.
-- The solution should be portable (local runable on every desktop)
-- With a 4G connection inital page load should be completed within 1sec
+- The solution should be portable (locally runnable on every desktop)
+- With a 4G connection, the initial page load should be completed within 1sec

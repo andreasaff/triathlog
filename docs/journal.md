@@ -11,3 +11,5 @@ This journal logs all efforts torwards bringing the triathlog to life.
 |21.09.2025| - Build Add Dialog <br /> -Implement proper form validation <br /> - Connect form to DB | 8h
 |22.09.2025| - Draw component dataflow and think about refactor | 1h
 |23.09.2025| - Refactor calendar component <br /> - Adjust DB schema <br /> - Add data persistance via form <br /> - Add basic load function | 5h
+|24.09.2025| - Documentation|2h
+|25.09.2025| - Documentation|3h
