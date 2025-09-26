@@ -3,7 +3,6 @@
 	import EventCalendarDialog from './event-calendar-dialog.svelte';
 	import EventCalendarHeader from './event-calendar-header.svelte';
 	import EventCalendarNav from './event-calendar-nav.svelte';
-	import type { Event } from './event.ts';
 
 	let { startDate, events, children } = $props();
 
@@ -31,9 +30,20 @@
 		return date;
 	}
 
-	// dialog state
+	// dialog
 	let isOpen: boolean = $state(false);
 	let fieldDate: Date = $state(new Date());
+	let dialogTitle: string = $state('');
+	let dialogDescription: string = $state('');
+
+	function formatDescriptionDate(date: Date) {
+		return date.toLocaleDateString([], {
+			weekday: 'short',
+			month: 'short',
+			day: '2-digit',
+			year: 'numeric'
+		});
+	}
 </script>
 
 <EventCalendarNav
@@ -60,15 +70,25 @@
 				<div
 					class="day-cell"
 					onclick={() => {
-						fieldDate = day;
 						isOpen = true;
+						fieldDate = day;
+						dialogTitle = 'Add new training';
+						dialogDescription = `Add new training on ${formatDescriptionDate(fieldDate)}`;
 					}}
 				></div>
 			{/each}
 
 			<!-- render events -->
 			{#each events.filter((event: Traning) => event.date.toDateString() === day.toDateString()) as event (event.id)}
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
+					onclick={() => {
+						isOpen = true;
+						fieldDate = event.date;
+						dialogTitle = 'Edit training';
+						dialogDescription = `Edit your traning planned for ${formatDescriptionDate(event.date)}`;
+					}}
 					class="event"
 					style="
                             top: {event.startMin}px; 
@@ -88,7 +108,7 @@
 	{/each}
 </div>
 
-<EventCalendarDialog title="You opend me via cell" description="abc" bind:open={isOpen}>
+<EventCalendarDialog title={dialogTitle} description={dialogDescription} bind:open={isOpen}>
 	{@render children(fieldDate)}
 </EventCalendarDialog>
 
