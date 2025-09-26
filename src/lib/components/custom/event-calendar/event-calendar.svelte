@@ -154,5 +154,9 @@
 		padding: 4px;
 		font-size: 12px;
 		border-radius: 3px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		word-break: break-all;
 	}
 </style>

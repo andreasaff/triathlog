@@ -20,6 +20,6 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 8px;
+		margin: 8px 0;
 	}
 </style>

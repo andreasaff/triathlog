@@ -131,7 +131,7 @@
 					{#snippet children({ props })}
 						<Form.Label>Notes</Form.Label>
 						<Textarea
-							class="h-[120px] resize-none"
+							class="h-[120px] resize-none break-all"
 							{...props}
 							placeholder="Add some notes..."
 							bind:value={$formData.description}
