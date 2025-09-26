@@ -44,6 +44,12 @@
 			year: 'numeric'
 		});
 	}
+
+	function formatEventDisplayTime(minutesOfDay: number) {
+		const hour = String(Math.floor(minutesOfDay / 60)).padStart(2, '0');
+		const min = String(minutesOfDay % 60).padStart(2, '0');
+		return `${hour}:${min}`;
+	}
 </script>
 
 <EventCalendarNav
@@ -96,12 +102,11 @@
                         "
 				>
 					{event.type} <br />
-					<!-- <small
-						>{event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {event.end.toLocaleTimeString(
-							[],
-							{ hour: '2-digit', minute: '2-digit' }
+					<small
+						>{formatEventDisplayTime(event.startMin)} - {formatEventDisplayTime(
+							event.startMin + event.durationMin
 						)}</small
-					> -->
+					>
 				</div>
 			{/each}
 		</div>
