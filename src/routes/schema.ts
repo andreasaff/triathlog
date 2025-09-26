@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 const MAX_DESCRIPTION_LENGTH = 255;
 
-export const traningFormSchema = z.object({
+export const trainingFormSchema = z.object({
     date: z.string().trim(), //todo security
     startTime: z.string().trim().min(1, "Invalid starttime"),
     duration: z.string().trim().min(1, "Invalid duration"),
@@ -13,6 +13,6 @@ export const traningFormSchema = z.object({
     const start = parseInt(schema.startTime, 10);
     const duration = parseInt(schema.duration, 10);
     return !isNaN(start) && !isNaN(duration) && (start + duration) <= 24 * 60;
-}, { message: "Traning can't wrap past midnight", path: ['duration'] });
+}, { message: "Trainings can't wrap past midnight", path: ['duration'] });
 
-export type TraningFormSchema = typeof traningFormSchema;
+export type TrainingFormSchema = typeof trainingFormSchema;

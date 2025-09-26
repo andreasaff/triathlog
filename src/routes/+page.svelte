@@ -7,13 +7,13 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { traningFormSchema, type TraningFormSchema } from './schema';
+	import { trainingFormSchema, type TrainingFormSchema } from './schema';
 
 	let { data }: { data: PageData } = $props();
 
 	// clientside validation of the form
 	const form = superForm(data.form, {
-		validators: zodClient(traningFormSchema)
+		validators: zodClient(trainingFormSchema)
 	});
 
 	const { form: formData, enhance } = form;
