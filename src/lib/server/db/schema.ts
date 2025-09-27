@@ -1,7 +1,7 @@
 import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 import { isodate } from './types/isodate'
 
-export const traning = sqliteTable('traning', {
+export const training = sqliteTable('training', {
 	id: text('id').primaryKey(),
 	type: text('type', { enum: ['Running', 'Cycling', 'Swimming', 'Strength'] }).notNull(),
 	date: isodate().notNull(),
