@@ -5,7 +5,6 @@
 </script>
 
 <Dialog.Root bind:open>
-	<!-- <Dialog.Trigger>Open Injected Thinker</Dialog.Trigger> -->
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>{title}</Dialog.Title>

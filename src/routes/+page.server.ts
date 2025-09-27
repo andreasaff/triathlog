@@ -1,15 +1,13 @@
-import type { PageServerLoad, Actions } from './$types'
-import { superValidate } from 'sveltekit-superforms';
-import { trainingFormSchema as trainingFormSchema } from './schema';
-import { zod } from 'sveltekit-superforms/adapters';
+import { createTraining, getAllTraining, getTrainingById, getTraningByDate, updateTrainingById } from '$lib/server/db/queries/traning';
 import { fail } from '@sveltejs/kit';
-import { createTraning, getAllTraning, getTraningByDate } from '$lib/server/db/queries/traning';
-import { v4 as uuidv4 } from 'uuid'
-import { start } from 'repl';
-import { duration } from 'drizzle-orm/gel-core';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { v4 as uuidv4 } from 'uuid';
+import type { Actions, PageServerLoad } from './$types';
+import { trainingFormSchema } from './schema';
 
 export const load: PageServerLoad = async () => {
-    let tranings = await getAllTraning()
+    let tranings = await getAllTraining()
     let form = await superValidate(zod(trainingFormSchema))
 
     return {
@@ -22,11 +20,13 @@ const serverTrainingFormSchema = trainingFormSchema.refine(async schema => {
     const startMin = parseInt(schema.startTime)
     const endMin = startMin + parseInt(schema.duration)
     const onDay = await getTraningByDate(new Date(schema.date))
-    return onDay.filter((t) => (t.startMin < endMin && startMin < (t.startMin + t.durationMin))).length == 0
+    return onDay
+        .filter((t) => schema.id != t.id)
+        .filter((t) => (t.startMin < endMin && startMin < (t.startMin + t.durationMin))).length == 0
 }, { message: "Can't add colliding trainings", path: ['startTime'] })
 
 export const actions: Actions = {
-    addTraning: async (event) => {
+    saveTraining: async (event) => {
         const form = await superValidate(event, zod(serverTrainingFormSchema));
 
         if (!form.valid) {
@@ -35,15 +35,23 @@ export const actions: Actions = {
             });
         }
 
-        let formData = form.data
-        let date = new Date(formData.date)
+        const formData = form.data
+        const date = new Date(formData.date)
 
-        let id = uuidv4()
+        if (!formData.id) {
+            createTraining(uuidv4(), formData.type, date, parseInt(formData.startTime), parseInt(formData.duration), formData.description)
+            return { form };
+        }
 
-        createTraning(id, formData.type, date, parseInt(formData.startTime), parseInt(formData.duration), formData.description)
+        const exists = getTrainingById(formData.id);
 
-        return {
-            form,
-        };
+        //TODO catch this in form
+        if (!exists) {
+            return fail(404);
+        }
+
+        updateTrainingById(formData.id, formData.type, parseInt(formData.startTime), parseInt(formData.duration), formData.description)
+
+        return { form };
     },
 };

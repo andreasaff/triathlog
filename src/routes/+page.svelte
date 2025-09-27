@@ -1,19 +1,22 @@
 <script lang="ts">
+	import type { CalendarContext } from '$lib/components/custom/event-calendar/calendar-context';
 	import EventCalendar from '$lib/components/custom/event-calendar/event-calendar.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import * as Select from '$lib/components/ui/select';
 	import { Textarea } from '$lib/components/ui/textarea';
-	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { trainingFormSchema, type TrainingFormSchema } from './schema';
+	import type { PageData } from './$types';
+	import { trainingFormSchema } from './schema';
 
 	let { data }: { data: PageData } = $props();
 
 	// clientside validation of the form
 	const form = superForm(data.form, {
-		validators: zodClient(trainingFormSchema)
+		validators: zodClient(trainingFormSchema),
+		resetForm: true,
+		clearOnSubmit: 'errors-and-message'
 	});
 
 	const { form: formData, enhance } = form;
@@ -23,7 +26,7 @@
 	startDate.setDate(startDate.getDate() - (startDate.getDay() || 7) + 1);
 
 	// time and duration options
-	const maxDurationHours = 8;
+	const MAXDURATIONHOURS = 8;
 
 	//start times
 	type Times = {
@@ -46,20 +49,22 @@
 	$effect(() => {
 		const setStartTime = $formData.startTime;
 		if (!setStartTime) {
-			durations = times.slice(1, 4 * maxDurationHours + 1);
+			durations = times.slice(1, 4 * MAXDURATIONHOURS + 1);
 		} else {
 			durations = times.filter((t) => {
-				return t.minutes + parseInt(setStartTime) <= 1440 && t.minutes <= 480;
+				return t.minutes + parseInt(setStartTime) <= 1440 && t.minutes <= MAXDURATIONHOURS * 60;
 			});
 		}
 	});
 </script>
 
 <EventCalendar {startDate} events={data.tranings}>
-	{#snippet children(date: Date)}
-		<form method="POST" action="?/addTraning" use:enhance>
-			<!--date -->
-			<input type="hidden" value={date.toISOString()} name="date" />
+	{#snippet children(ctx: CalendarContext)}
+		<form method="POST" action="?/saveTraining" use:enhance>
+			<!-- event id -->
+			<input type="hidden" value={ctx.id} name="id" />
+			<!-- date -->
+			<input type="hidden" value={ctx.date.toISOString()} name="date" />
 			<!-- traning type -->
 			<Form.Field {form} name="type">
 				<Form.Control>

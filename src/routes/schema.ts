@@ -3,6 +3,7 @@ import * as z from 'zod';
 const MAX_DESCRIPTION_LENGTH = 255;
 
 export const trainingFormSchema = z.object({
+    id: z.string().trim().uuid().optional(),
     date: z.string().trim(), //todo security
     startTime: z.string().trim().min(1, "Invalid starttime"),
     duration: z.string().trim().min(1, "Invalid duration"),

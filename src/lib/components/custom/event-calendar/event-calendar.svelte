@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { Traning } from '$lib/server/db/queries/traning';
+	import type { Training } from '$lib/server/db/queries/traning';
+	import type { CalendarContext } from './calendar-context';
 	import EventCalendarDialog from './event-calendar-dialog.svelte';
 	import EventCalendarHeader from './event-calendar-header.svelte';
 	import EventCalendarNav from './event-calendar-nav.svelte';
@@ -32,7 +33,7 @@
 
 	// dialog
 	let isOpen: boolean = $state(false);
-	let fieldDate: Date = $state(new Date());
+	let ctx: CalendarContext | undefined = $state();
 	let dialogTitle: string = $state('');
 	let dialogDescription: string = $state('');
 
@@ -77,21 +78,31 @@
 					class="day-cell"
 					onclick={() => {
 						isOpen = true;
-						fieldDate = day;
+						ctx = {
+							date: day,
+							startMin: hourIndex * 60,
+							durationMin: (hourIndex + 1) * 60
+						};
 						dialogTitle = 'Add new training';
-						dialogDescription = `Add new training on ${formatDescriptionDate(fieldDate)}`;
+						dialogDescription = `Add new training on ${formatDescriptionDate(day)}`;
 					}}
 				></div>
 			{/each}
 
 			<!-- render events -->
-			{#each events.filter((event: Traning) => event.date.toDateString() === day.toDateString()) as event (event.id)}
+			{#each events.filter((event: Training) => event.date.toDateString() === day.toDateString()) as event (event.id)}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					onclick={() => {
 						isOpen = true;
-						fieldDate = event.date;
+						ctx = {
+							id: event.id,
+							date: event.date,
+							type: event.type,
+							startMin: event.startMin,
+							durationMin: event.durationMin
+						};
 						dialogTitle = 'Edit training';
 						dialogDescription = `Edit your traning planned for ${formatDescriptionDate(event.date)}`;
 					}}
@@ -114,7 +125,7 @@
 </div>
 
 <EventCalendarDialog title={dialogTitle} description={dialogDescription} bind:open={isOpen}>
-	{@render children(fieldDate)}
+	{@render children(ctx)}
 </EventCalendarDialog>
 
 <style>

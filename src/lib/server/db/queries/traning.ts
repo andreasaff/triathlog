@@ -30,6 +30,7 @@ export async function updateTrainingdoneById(id: string, isCompleted: boolean) {
     const result = await db.update(training).set({
         isCompleted: isCompleted
     })
+    return result;
 }
 
 // R
@@ -43,9 +44,15 @@ export async function getTraningByDate(date: Date) {
     });
 }
 
+export async function getTrainingById(id: string) {
+    return await db.query.training.findFirst({
+        where: eq(training.id, id)
+    })
+}
+
 // D
 export async function deleteTrainingById(id: string) {
     return await db.delete(training).where(eq(training.id, id))
 }
 
-export type Traning = typeof training.$inferSelect
+export type Training = typeof training.$inferSelect
