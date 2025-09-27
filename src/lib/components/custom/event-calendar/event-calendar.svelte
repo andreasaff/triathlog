@@ -51,7 +51,7 @@
 						onEventClick({
 							date: day,
 							startMin: hourIndex * 60,
-							durationMin: (hourIndex + 1) * 60
+							durationMin: 60
 						})}
 				></div>
 			{/each}

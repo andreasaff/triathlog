@@ -73,7 +73,7 @@
 		isOpen = true;
 	}
 
-	let events: Event[] = $state(
+	let events: Event[] = $derived(
 		data.trainings.map((t) => ({
 			id: t.id,
 			title: t.type,
@@ -83,6 +83,15 @@
 			description: t.description ? t.description : undefined
 		}))
 	);
+
+	$effect(() => {
+		$formData.startTime = event?.startMin ? String(event.startMin) : '0';
+		$formData.duration = event?.durationMin ? String(event.durationMin) : '60';
+		$formData.type = event?.title
+			? (event.title as 'Running' | 'Cycling' | 'Swimming' | 'Strength')
+			: 'Running'; //TODO: FIX THIS (potential for casting failure!)
+		$formData.description = event?.description ? event.description : '';
+	});
 </script>
 
 <EventCalendar {startDate} {events} onEventClick={handleEventClick} />
