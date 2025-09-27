@@ -1,7 +1,8 @@
-export interface CalendarContext {
+export interface Event {
     id?: string;
-    type?: string;
+    title?: string;
     date: Date
     startMin: number;
     durationMin: number;
+    description?: string;
 }

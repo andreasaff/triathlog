@@ -2,7 +2,6 @@
 	let { dayDates } = $props();
 </script>
 
-<!--- <div class="grid gap-4" style="grid-template-columns: repeat({days.length}, 1fr);"> -->
 <div class="header">
 	<div></div>
 	{#each dayDates as dayDate}

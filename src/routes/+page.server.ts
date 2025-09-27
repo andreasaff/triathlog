@@ -7,11 +7,11 @@ import type { Actions, PageServerLoad } from './$types';
 import { trainingFormSchema } from './schema';
 
 export const load: PageServerLoad = async () => {
-    let tranings = await getAllTraining()
+    let trainings = await getAllTraining()
     let form = await superValidate(zod(trainingFormSchema))
 
     return {
-        tranings: tranings,
+        trainings: trainings,
         form: form
     };
 };

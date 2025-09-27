@@ -1,11 +1,17 @@
 <script lang="ts">
-	import type { Training } from '$lib/server/db/queries/traning';
-	import type { CalendarContext } from './calendar-context';
-	import EventCalendarDialog from './event-calendar-dialog.svelte';
+	import { formatDigitalTime, formatDigitalTimeByMinutes } from '$lib/datetime';
+	import type { Event } from './event';
+	import { getDateOfDay, moveWeek } from './event-calendar';
 	import EventCalendarHeader from './event-calendar-header.svelte';
 	import EventCalendarNav from './event-calendar-nav.svelte';
 
-	let { startDate, events, children } = $props();
+	interface Props {
+		startDate: Date;
+		events: Event[];
+		onEventClick: (event: Event) => any;
+	}
+
+	let { startDate, events, onEventClick }: Props = $props();
 
 	//first day shown in the calendar
 	let currentWeeksStartDate = $state(startDate);
@@ -14,43 +20,8 @@
 	const dayDates = $derived(
 		Array.from({ length: 7 }, (_, i) => getDateOfDay(currentWeeksStartDate, i))
 	);
-	const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
 
-	// calcuate the dates for the week
-	function getDateOfDay(startDate: Date, index: number) {
-		const date = new Date(startDate);
-		date.setHours(0, 0, 0, 0);
-		date.setDate(date.getDate() + index);
-		return date;
-	}
-
-	// move between weeks
-	function moveWeek(startDate: Date, offset: number) {
-		const date = new Date(startDate);
-		date.setDate(date.getDate() + offset);
-		return date;
-	}
-
-	// dialog
-	let isOpen: boolean = $state(false);
-	let ctx: CalendarContext | undefined = $state();
-	let dialogTitle: string = $state('');
-	let dialogDescription: string = $state('');
-
-	function formatDescriptionDate(date: Date) {
-		return date.toLocaleDateString([], {
-			weekday: 'short',
-			month: 'short',
-			day: '2-digit',
-			year: 'numeric'
-		});
-	}
-
-	function formatEventDisplayTime(minutesOfDay: number) {
-		const hour = String(Math.floor(minutesOfDay / 60)).padStart(2, '0');
-		const min = String(minutesOfDay % 60).padStart(2, '0');
-		return `${hour}:${min}`;
-	}
+	const hours = Array.from({ length: 24 }, (_, i) => formatDigitalTime(i, 0));
 </script>
 
 <EventCalendarNav
@@ -76,45 +47,38 @@
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					class="day-cell"
-					onclick={() => {
-						isOpen = true;
-						ctx = {
+					onclick={() =>
+						onEventClick({
 							date: day,
 							startMin: hourIndex * 60,
 							durationMin: (hourIndex + 1) * 60
-						};
-						dialogTitle = 'Add new training';
-						dialogDescription = `Add new training on ${formatDescriptionDate(day)}`;
-					}}
+						})}
 				></div>
 			{/each}
 
 			<!-- render events -->
-			{#each events.filter((event: Training) => event.date.toDateString() === day.toDateString()) as event (event.id)}
+			{#each events.filter((event: Event) => event.date.toDateString() === day.toDateString()) as event (event.id)}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
-					onclick={() => {
-						isOpen = true;
-						ctx = {
+					onclick={() =>
+						onEventClick({
 							id: event.id,
-							date: event.date,
-							type: event.type,
+							title: event.title,
+							date: day,
 							startMin: event.startMin,
-							durationMin: event.durationMin
-						};
-						dialogTitle = 'Edit training';
-						dialogDescription = `Edit your traning planned for ${formatDescriptionDate(event.date)}`;
-					}}
+							durationMin: event.durationMin,
+							description: event.description
+						})}
 					class="event"
 					style="
                             top: {event.startMin}px; 
                             height: {event.durationMin}px;
                         "
 				>
-					{event.type} <br />
+					{event.title} <br />
 					<small
-						>{formatEventDisplayTime(event.startMin)} - {formatEventDisplayTime(
+						>{formatDigitalTimeByMinutes(event.startMin)} - {formatDigitalTimeByMinutes(
 							event.startMin + event.durationMin
 						)}</small
 					>
@@ -123,10 +87,6 @@
 		</div>
 	{/each}
 </div>
-
-<EventCalendarDialog title={dialogTitle} description={dialogDescription} bind:open={isOpen}>
-	{@render children(ctx)}
-</EventCalendarDialog>
 
 <style>
 	.calendar {

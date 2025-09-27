@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CalendarContext } from '$lib/components/custom/event-calendar/calendar-context';
+	import type { Event } from '$lib/components/custom/event-calendar/event';
 	import EventCalendar from '$lib/components/custom/event-calendar/event-calendar.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
@@ -9,6 +9,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import type { PageData } from './$types';
 	import { trainingFormSchema } from './schema';
+	import Dialog from '$lib/components/custom/dialog/dialog.svelte';
+	import { formatDigitalTime } from '$lib/datetime';
 
 	let { data }: { data: PageData } = $props();
 
@@ -37,9 +39,7 @@
 	const times: Times[] = [];
 	for (let hour = 0; hour < 24; hour++) {
 		for (let minute = 0; minute < 60; minute += 15) {
-			const hh = String(hour).padStart(2, '0');
-			const mm = String(minute).padStart(2, '0');
-			times.push({ digital: `${hh}:${mm}`, minutes: 60 * hour + minute });
+			times.push({ digital: formatDigitalTime(hour, minute), minutes: 60 * hour + minute });
 		}
 	}
 
@@ -56,15 +56,50 @@
 			});
 		}
 	});
+
+	//callback prop event handler for calendar
+	let event: Event | undefined = $state();
+	let isOpen: boolean = $state(false);
+
+	function handleEventClick(ev: Event) {
+		event = {
+			id: ev.id,
+			title: ev.title,
+			date: ev.date,
+			startMin: ev.startMin,
+			durationMin: ev.durationMin,
+			description: ev.description
+		};
+		isOpen = true;
+	}
+
+	let events: Event[] = $state(
+		data.trainings.map((t) => ({
+			id: t.id,
+			title: t.type,
+			date: t.date,
+			startMin: t.startMin,
+			durationMin: t.durationMin,
+			description: t.description ? t.description : undefined
+		}))
+	);
 </script>
 
-<EventCalendar {startDate} events={data.tranings}>
-	{#snippet children(ctx: CalendarContext)}
+<EventCalendar {startDate} {events} onEventClick={handleEventClick} />
+
+<Dialog
+	title={event?.id ? `Edit ${event.title} training` : 'Add new training'}
+	description={event?.id
+		? `Edit your ${event.title} training, planned for ${event.date.toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' })}`
+		: `Add new training on ${event?.date.toLocaleDateString([], { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' })}`}
+	bind:open={isOpen}
+>
+	{#snippet children()}
 		<form method="POST" action="?/saveTraining" use:enhance>
 			<!-- event id -->
-			<input type="hidden" value={ctx.id} name="id" />
+			<input type="hidden" value={event?.id} name="id" />
 			<!-- date -->
-			<input type="hidden" value={ctx.date.toISOString()} name="date" />
+			<input type="hidden" value={event?.date} name="date" />
 			<!-- traning type -->
 			<Form.Field {form} name="type">
 				<Form.Control>
@@ -166,4 +201,4 @@
 			</div>
 		</form>
 	{/snippet}
-</EventCalendar>
+</Dialog>

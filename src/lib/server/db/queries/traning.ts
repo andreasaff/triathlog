@@ -3,7 +3,7 @@ import { db } from '../index';
 import { training } from '../schema';
 
 // C
-export async function createTraining(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', date: Date, startMin: number, durationMin: number, description?: string) {
+export async function createTraining(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', date: Date, startMin: number, durationMin: number, description?: string): Promise<Training> {
     const result = await db.insert(training).values({
         id: id,
         type: type,
@@ -12,47 +12,47 @@ export async function createTraining(id: string, type: 'Running' | 'Cycling' | '
         durationMin: durationMin,
         description,
     }).returning();
-    return result;
+    return result[0];
 }
 
 // U
-export async function updateTrainingById(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', startMin: number, durationMin: number, description?: string) {
+export async function updateTrainingById(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', startMin: number, durationMin: number, description?: string): Promise<Training> {
     const result = await db.update(training).set({
         type: type,
         startMin: startMin,
         durationMin: durationMin,
         description: description
-    }).where(eq(training.id, id)).returning()
-    return result;
+    }).where(eq(training.id, id)).returning();
+    return result[0];
 }
 
-export async function updateTrainingdoneById(id: string, isCompleted: boolean) {
+export async function updateTrainingdoneById(id: string, isCompleted: boolean): Promise<Training> {
     const result = await db.update(training).set({
         isCompleted: isCompleted
-    })
-    return result;
+    }).where(eq(training.id, id)).returning();
+    return result[0];
 }
 
 // R
-export async function getAllTraining() {
-    return await db.select().from(training)
+export async function getAllTraining(): Promise<Training[]> {
+    return await db.select().from(training);
 }
 
-export async function getTraningByDate(date: Date) {
+export async function getTraningByDate(date: Date): Promise<Training[]> {
     return await db.query.training.findMany({
         where: eq(training.date, date)
     });
 }
 
-export async function getTrainingById(id: string) {
+export async function getTrainingById(id: string): Promise<Training | undefined> {
     return await db.query.training.findFirst({
         where: eq(training.id, id)
-    })
+    });
 }
 
 // D
-export async function deleteTrainingById(id: string) {
-    return await db.delete(training).where(eq(training.id, id))
+export async function deleteTrainingById(id: string): Promise<void> {
+    await db.delete(training).where(eq(training.id, id));
 }
 
-export type Training = typeof training.$inferSelect
+export type Training = typeof training.$inferSelect;
