@@ -13,3 +13,5 @@ This journal logs all efforts torwards bringing the triathlog to life.
 |23.09.2025| - Refactor calendar component <br /> - Adjust DB schema <br /> - Add data persistance via form <br /> - Add basic load function | 5h
 |24.09.2025| - Documentation|2h
 |25.09.2025| - Documentation|3h
+|26.09.2025| - Various bugfixes|1h
+|27.09.2025| - Refactoring event-calendar and dialog <br /> - Implement edit training feature | 6h
