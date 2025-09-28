@@ -1,16 +1,16 @@
 <script lang="ts">
+	import Dialog from '$lib/components/custom/dialog/dialog.svelte';
 	import type { Event } from '$lib/components/custom/event-calendar/event';
 	import EventCalendar from '$lib/components/custom/event-calendar/event-calendar.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import * as Select from '$lib/components/ui/select';
 	import { Textarea } from '$lib/components/ui/textarea';
+	import { getTimeIntervalls, type Time } from '$lib/datetime';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import type { PageData } from './$types';
 	import { trainingFormSchema } from './schema';
-	import Dialog from '$lib/components/custom/dialog/dialog.svelte';
-	import { formatDigitalTime } from '$lib/datetime';
 
 	let { data }: { data: PageData } = $props();
 
@@ -30,49 +30,7 @@
 	// time and duration options
 	const MAXDURATIONHOURS = 8;
 
-	//start times
-	type Times = {
-		digital: string;
-		minutes: number;
-	};
-
-	const times: Times[] = [];
-	for (let hour = 0; hour < 24; hour++) {
-		for (let minute = 0; minute < 60; minute += 15) {
-			times.push({ digital: formatDigitalTime(hour, minute), minutes: 60 * hour + minute });
-		}
-	}
-
-	//duration
-	let durations: Times[] = $state([]);
-
-	$effect(() => {
-		const setStartTime = $formData.startTime;
-		if (!setStartTime) {
-			durations = times.slice(1, 4 * MAXDURATIONHOURS + 1);
-		} else {
-			durations = times.filter((t) => {
-				return t.minutes + parseInt(setStartTime) <= 1440 && t.minutes <= MAXDURATIONHOURS * 60;
-			});
-		}
-	});
-
-	//callback prop event handler for calendar
-	let event: Event | undefined = $state();
-	let isOpen: boolean = $state(false);
-
-	function handleEventClick(ev: Event) {
-		event = {
-			id: ev.id,
-			title: ev.title,
-			date: ev.date,
-			startMin: ev.startMin,
-			durationMin: ev.durationMin,
-			description: ev.description
-		};
-		isOpen = true;
-	}
-
+	// the events passed down to the calendar component
 	let events: Event[] = $derived(
 		data.trainings.map((t) => ({
 			id: t.id,
@@ -84,6 +42,28 @@
 		}))
 	);
 
+	// starttimes and durations for dropdown
+	const times: Time[] = getTimeIntervalls(24, 15);
+
+	const durations: Time[] = $derived(
+		times
+			.slice(1)
+			.filter(
+				(t) =>
+					t.minutes + parseInt($formData.startTime) <= 1440 && t.minutes <= MAXDURATIONHOURS * 60
+			)
+	);
+
+	//callback prop event handler for calendar
+	let event: Event | undefined = $state();
+	let isOpen: boolean = $state(false);
+
+	function handleEventClick(ev: Event) {
+		event = { ...ev };
+		isOpen = true;
+	}
+
+	// prepopulating the dialog
 	$effect(() => {
 		$formData.startTime = event?.startMin ? String(event.startMin) : '0';
 		$formData.duration = event?.durationMin ? String(event.durationMin) : '60';
@@ -189,7 +169,6 @@
 				</Form.Control>
 				<Form.FieldErrors />
 			</Form.Field>
-
 			<div class="flex flex-row-reverse justify-around pt-2">
 				<Form.Field {form} name="isCompleted">
 					<Form.Control>
