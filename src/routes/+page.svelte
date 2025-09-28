@@ -11,6 +11,8 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import type { PageData } from './$types';
 	import { trainingFormSchema } from './schema';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { enhance } from '$app/forms';
 
 	let { data }: { data: PageData } = $props();
 
@@ -21,7 +23,7 @@
 		clearOnSubmit: 'errors-and-message'
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData } = form;
 
 	//start date for calendar (monday of current week)
 	const startDate = new Date();
@@ -58,7 +60,7 @@
 	let event: Event | undefined = $state();
 	let isOpen: boolean = $state(false);
 
-	function handleEventClick(ev: Event) {
+	function handleEventClick(ev: Event): void {
 		event = { ...ev };
 		isOpen = true;
 	}
@@ -72,6 +74,16 @@
 			: 'Running'; //TODO: FIX THIS (potential for casting failure!)
 		$formData.description = event?.description ? event.description : '';
 	});
+
+	const handleSaveTraining: SubmitFunction = ({ formData }) => {
+		if (event?.id) {
+			formData.append('id', event.id);
+		}
+
+		if (event?.date) {
+			formData.append('date', event.date.toISOString());
+		}
+	};
 </script>
 
 <EventCalendar {startDate} {events} onEventClick={handleEventClick} />
@@ -84,12 +96,7 @@
 	bind:open={isOpen}
 >
 	{#snippet children()}
-		<form method="POST" action="?/saveTraining" use:enhance>
-			<!-- event id -->
-			<input type="hidden" value={event?.id} name="id" />
-			<!-- date -->
-			<input type="hidden" value={event?.date} name="date" />
-			<!-- traning type -->
+		<form method="POST" action="?/saveTraining" use:enhance={handleSaveTraining}>
 			<Form.Field {form} name="type">
 				<Form.Control>
 					{#snippet children({ props })}
