@@ -198,23 +198,25 @@
 			</Form.Field>
 
 			<!--  isCompleted -->
-			<Form.Field {form} name="isCompleted">
+			<Form.Field {form} name="isCompleted" class="pt-2">
 				<Form.Control>
 					{#snippet children({ props })}
-						<Checkbox
-							{...props}
-							checked={$formData.isCompleted === 'true'}
-							value={$formData.isCompleted}
-							onCheckedChange={(v) =>
-								v ? ($formData.isCompleted = 'true') : ($formData.isCompleted = 'false')}
-							>Hello</Checkbox
-						>
-						<Form.Label>Mark as completed</Form.Label>
+						<div class="flex gap-3">
+							<Checkbox
+								{...props}
+								checked={$formData.isCompleted === 'true'}
+								value={$formData.isCompleted}
+								onCheckedChange={(v) =>
+									v ? ($formData.isCompleted = 'true') : ($formData.isCompleted = 'false')}
+							></Checkbox>
+							<Form.Label>Mark as completed</Form.Label>
+						</div>
 					{/snippet}
 				</Form.Control>
 			</Form.Field>
+
 			<!-- description -->
-			<Form.Field {form} name="description" class="pt-2">
+			<Form.Field {form} name="description" class="pt-4">
 				<Form.Control>
 					{#snippet children({ props })}
 						<Form.Label>Notes</Form.Label>
@@ -229,11 +231,14 @@
 				<Form.FieldErrors />
 			</Form.Field>
 			<!-- save button  -->
-			<Form.Button>Save</Form.Button>
+			<Form.Button style="width:100%">Save</Form.Button>
 		</form>
-		<form method="POST" action="?/deleteTraining" use:enhance={handleDeleteTraining}>
-			<Form.Button>Delete</Form.Button>
-		</form>
+		{#if event?.id}
+			<form method="POST" action="?/deleteTraining" use:enhance={handleDeleteTraining}>
+				<input type="hidden" name="id" value={event.id} />
+				<Form.Button variant="destructive" style="width:100%">Delete</Form.Button>
+			</form>
+		{/if}
 	{/snippet}
 </Dialog>
 <Toaster position="top-center" richColors />
