@@ -1,10 +1,12 @@
-import { createTraining, getAllTraining, getTrainingById, getTraningByDate, updateTrainingById } from '$lib/server/db/queries/traning';
+import { createTraining, deleteTrainingById, getAllTraining, getTrainingById, getTraningByDate, updateTrainingById } from '$lib/server/db/queries/traning';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { v4 as uuidv4 } from 'uuid';
 import type { Actions, PageServerLoad } from './$types';
 import { trainingFormSchema } from './schema';
+import { validate as uuidValidate } from 'uuid';
+
 
 export const load: PageServerLoad = async () => {
     let trainings = await getAllTraining()
@@ -67,4 +69,24 @@ export const actions: Actions = {
 
         return { form };
     },
+
+    deleteTraining: async ({ request }) => {
+        const data = await request.formData()
+
+        const id = data.get('id');
+
+        if (!id || !uuidValidate(id.toString())) {
+            return fail(400)
+        }
+
+        const ids = id.toString()
+
+        const exists = getTrainingById(ids)
+
+        if (!exists) {
+            return fail(404)
+        }
+
+        deleteTrainingById(ids)
+    }
 };

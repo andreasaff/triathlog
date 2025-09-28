@@ -14,6 +14,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { enhance } from '$app/forms';
 	import { toast, Toaster } from 'svelte-sonner';
+	import FormButton from '$lib/components/ui/form/form-button.svelte';
 
 	let { data }: { data: PageData } = $props();
 
@@ -94,6 +95,24 @@
 
 			if (result.type === 'failure') {
 				toast.error('Failed to save training!');
+			}
+		};
+	};
+
+	const handleDeleteTraining: SubmitFunction = ({ formData }) => {
+		if (event?.id) {
+			formData.append('id', event.id);
+		}
+
+		return async ({ result, update }) => {
+			await update();
+			if (result.type === 'success') {
+				toast.success('Successfully deleted training!');
+				isOpen = false;
+			}
+
+			if (result.type === 'failure') {
+				toast.error('Failed to delete training!');
 			}
 		};
 	};
@@ -207,6 +226,9 @@
 				</Form.Field>
 				<Form.Button>Save</Form.Button>
 			</div>
+		</form>
+		<form method="POST" action="?/deleteTraining" use:enhance={handleDeleteTraining}>
+			<Form.Button>Delete</Form.Button>
 		</form>
 	{/snippet}
 </Dialog>
