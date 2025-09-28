@@ -16,22 +16,36 @@ export const load: PageServerLoad = async () => {
     };
 };
 
-const serverTrainingFormSchema = trainingFormSchema.refine(async schema => {
+const serverTrainingFormSchema = trainingFormSchema.superRefine(async (schema, ctx) => {
     const startMin = parseInt(schema.startTime)
     const endMin = startMin + parseInt(schema.duration)
-    const onDay = await getTraningByDate(new Date(schema.date))
-    return onDay
-        .filter((t) => schema.id != t.id)
-        .filter((t) => (t.startMin < endMin && startMin < (t.startMin + t.durationMin))).length == 0
-}, { message: "Can't add colliding trainings", path: ['startTime'] })
 
+    const onDay = await getTraningByDate(new Date(schema.date))
+
+    const hasOverlap = onDay
+        .filter(t => schema.id !== t.id)
+        .some(t => t.startMin < endMin && startMin < (t.startMin + t.durationMin))
+
+    if (hasOverlap) {
+        ctx.addIssue({
+            code: 'custom',
+            message: 'Training overlaps with an already planned one',
+            path: ['startTime'],
+        })
+        ctx.addIssue({
+            code: 'custom',
+            message: 'Training overlaps with an already planned one',
+            path: ['duration'],
+        })
+    }
+})
 export const actions: Actions = {
     saveTraining: async (event) => {
         const form = await superValidate(event, zod(serverTrainingFormSchema));
 
         if (!form.valid) {
             return fail(400, {
-                form,
+                form
             });
         }
 
@@ -45,7 +59,6 @@ export const actions: Actions = {
 
         const exists = getTrainingById(formData.id);
 
-        //TODO catch this in form
         if (!exists) {
             return fail(404);
         }

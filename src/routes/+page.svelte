@@ -13,6 +13,7 @@
 	import { trainingFormSchema } from './schema';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { enhance } from '$app/forms';
+	import { toast, Toaster } from 'svelte-sonner';
 
 	let { data }: { data: PageData } = $props();
 
@@ -83,6 +84,18 @@
 		if (event?.date) {
 			formData.append('date', event.date.toISOString());
 		}
+
+		return async ({ result, update }) => {
+			await update();
+			if (result.type === 'success') {
+				toast.success('Successfully added training!');
+				isOpen = false;
+			}
+
+			if (result.type === 'failure') {
+				toast.error('Failed to save training!');
+			}
+		};
 	};
 </script>
 
@@ -197,3 +210,4 @@
 		</form>
 	{/snippet}
 </Dialog>
+<Toaster position="top-center" richColors />
