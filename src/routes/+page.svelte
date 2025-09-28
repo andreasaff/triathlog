@@ -15,6 +15,8 @@
 	import { enhance } from '$app/forms';
 	import { toast, Toaster } from 'svelte-sonner';
 	import FormButton from '$lib/components/ui/form/form-button.svelte';
+	import { Field } from 'formsnap';
+	import { Checkbox } from '$lib/components/ui/checkbox';
 
 	let { data }: { data: PageData } = $props();
 
@@ -42,7 +44,8 @@
 			date: t.date,
 			startMin: t.startMin,
 			durationMin: t.durationMin,
-			description: t.description ? t.description : undefined
+			description: t.description ? t.description : undefined,
+			isCompleted: t.isCompleted
 		}))
 	);
 
@@ -75,6 +78,7 @@
 			? (event.title as 'Running' | 'Cycling' | 'Swimming' | 'Strength')
 			: 'Running'; //TODO: FIX THIS (potential for casting failure!)
 		$formData.description = event?.description ? event.description : '';
+		$formData.isCompleted = event?.isCompleted ? 'true' : 'false';
 	});
 
 	const handleSaveTraining: SubmitFunction = ({ formData }) => {
@@ -89,7 +93,7 @@
 		return async ({ result, update }) => {
 			await update();
 			if (result.type === 'success') {
-				toast.success('Successfully added training!');
+				toast.success('Successfully saved training!');
 				isOpen = false;
 			}
 
@@ -193,6 +197,22 @@
 				<Form.FieldErrors />
 			</Form.Field>
 
+			<!--  isCompleted -->
+			<Form.Field {form} name="isCompleted">
+				<Form.Control>
+					{#snippet children({ props })}
+						<Checkbox
+							{...props}
+							checked={$formData.isCompleted === 'true'}
+							value={$formData.isCompleted}
+							onCheckedChange={(v) =>
+								v ? ($formData.isCompleted = 'true') : ($formData.isCompleted = 'false')}
+							>Hello</Checkbox
+						>
+						<Form.Label>Mark as completed</Form.Label>
+					{/snippet}
+				</Form.Control>
+			</Form.Field>
 			<!-- description -->
 			<Form.Field {form} name="description" class="pt-2">
 				<Form.Control>
@@ -208,24 +228,8 @@
 				</Form.Control>
 				<Form.FieldErrors />
 			</Form.Field>
-			<div class="flex flex-row-reverse justify-around pt-2">
-				<Form.Field {form} name="isCompleted">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Button
-								{...props}
-								class="text-white {$formData.isCompleted
-									? 'bg-green-500 hover:bg-green-400'
-									: 'bg-red-500 hover:bg-red-400'}"
-								onclick={() => {
-									$formData.isCompleted = !$formData.isCompleted;
-								}}>{$formData.isCompleted ? 'Done!' : 'ToDo'}</Button
-							>
-						{/snippet}
-					</Form.Control>
-				</Form.Field>
-				<Form.Button>Save</Form.Button>
-			</div>
+			<!-- save button  -->
+			<Form.Button>Save</Form.Button>
 		</form>
 		<form method="POST" action="?/deleteTraining" use:enhance={handleDeleteTraining}>
 			<Form.Button>Delete</Form.Button>

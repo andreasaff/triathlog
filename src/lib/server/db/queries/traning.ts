@@ -3,7 +3,7 @@ import { db } from '../index';
 import { training } from '../schema';
 
 // C
-export async function createTraining(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', date: Date, startMin: number, durationMin: number, description?: string): Promise<Training> {
+export async function createTraining(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', date: Date, startMin: number, durationMin: number, description?: string, isCompleted?: boolean): Promise<Training> {
     const result = await db.insert(training).values({
         id: id,
         type: type,
@@ -11,23 +11,18 @@ export async function createTraining(id: string, type: 'Running' | 'Cycling' | '
         startMin: startMin,
         durationMin: durationMin,
         description,
+        isCompleted
     }).returning();
     return result[0];
 }
 
 // U
-export async function updateTrainingById(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', startMin: number, durationMin: number, description?: string): Promise<Training> {
+export async function updateTrainingById(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', startMin: number, durationMin: number, description?: string, isCompleted?: boolean): Promise<Training> {
     const result = await db.update(training).set({
         type: type,
         startMin: startMin,
         durationMin: durationMin,
-        description: description
-    }).where(eq(training.id, id)).returning();
-    return result[0];
-}
-
-export async function updateTrainingdoneById(id: string, isCompleted: boolean): Promise<Training> {
-    const result = await db.update(training).set({
+        description: description,
         isCompleted: isCompleted
     }).where(eq(training.id, id)).returning();
     return result[0];

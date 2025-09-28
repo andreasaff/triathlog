@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Actions, PageServerLoad } from './$types';
 import { trainingFormSchema } from './schema';
 import { validate as uuidValidate } from 'uuid';
+import { fromDate } from '@internationalized/date';
 
 
 export const load: PageServerLoad = async () => {
@@ -53,9 +54,10 @@ export const actions: Actions = {
 
         const formData = form.data
         const date = new Date(formData.date)
+        const isCompleted = (formData.isCompleted === 'true')
 
         if (!formData.id) {
-            createTraining(uuidv4(), formData.type, date, parseInt(formData.startTime), parseInt(formData.duration), formData.description)
+            createTraining(uuidv4(), formData.type, date, parseInt(formData.startTime), parseInt(formData.duration), formData.description, isCompleted)
             return { form };
         }
 
@@ -65,7 +67,7 @@ export const actions: Actions = {
             return fail(404);
         }
 
-        updateTrainingById(formData.id, formData.type, parseInt(formData.startTime), parseInt(formData.duration), formData.description)
+        updateTrainingById(formData.id, formData.type, parseInt(formData.startTime), parseInt(formData.duration), formData.description, isCompleted)
 
         return { form };
     },

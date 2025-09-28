@@ -63,18 +63,14 @@
 				<div
 					onclick={() =>
 						onEventClick({
-							id: event.id,
-							title: event.title,
-							date: day,
-							startMin: event.startMin,
-							durationMin: event.durationMin,
-							description: event.description
+							...event
 						})}
 					class="event"
 					style="
-                            top: {event.startMin}px; 
-                            height: {event.durationMin}px;
-                        "
+						top: {event.startMin}px; 
+						height: {event.durationMin}px;
+						border-left-style: {event.isCompleted ? 'solid' : 'dotted'};
+					"
 				>
 					{event.title} <br />
 					<small

@@ -15,7 +15,7 @@ Nr|Title|Priority|Status
 1|Add training block|_Must_|✅
 2|Weekly overview|_Must_|✅
 3|Delete previously added training blocks|_Must_|✅
-4|Mark as done|_Should_|🔄
+4|Mark as done|_Should_|✅
 5|Update existing training blocks|_Could_|✅
 6|Recurring Training Blocks|_Could_|❌
 7|Stats|_Could_|❌

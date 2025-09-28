@@ -5,4 +5,5 @@ export interface Event {
     startMin: number;
     durationMin: number;
     description?: string;
+    isCompleted?: boolean;
 }
