@@ -32,7 +32,17 @@ As part of the assignment a few constraints were made:
 ## 3. Context
 The following graphic shows the usage and embedding of Triathlog in a real-world scenario.
 
-TODO
+![Context](./diagrams/context.png)
+
+**Triathlog End User**
+
+In context of Triathlog a triathlete preparing for his next race could be considered an end user.
+He wants to plan his training efforts, check which trainings lie ahead of him and mark trainings as completed.
+
+**Triathlog**
+
+Composed of a frontend, backend and database, Triathlog keeps track of training sessions planned by a triathlete. Planned trainings are stored persistently in a file-based database and retrieved for display on the frontend.
+Apart from the enduser, Triathlog does not interact with any other outside systems.
 
 ## 4. Solution Strategy
 
@@ -52,6 +62,22 @@ To ease interaction with the database and thus enhance developer experience, Dri
 With the idea in mind that Triathlog should be deployed and usable locally without the need for any internet/server connection, it's obvious that data has to be stored on the device. Given the use case and my prior knowledge, I wanted to use an SQL database for storing the data. These two constraints basically left SQLite as the option to be chosen.
 
 ## 5. Building Block View
+## 5.1 Frontend
+> Note: All components imported from thrid-part libraries were omitted in order to increase readability.
+
+Currently, Triathlog consists of a single page containing the form for saving/editing/deleting trainings as well as embedding the calendar component. When clicking on a timeslot or a existing training in the calendar component, an event object, containing `id?`, `date`, `startTime`, `durationMin`, `description?`, `isCompleted?` is passed to the page via a callback prop. This allows the page to recognize the currently selected timeslot or event in the calendar and prefill the form for saving/editing trainings. 
+
+![Frontend](./diagrams/frontend.png)
+
+## 5.2 Backend
+The backend is realized with a single controller exposing the `?/saveTraining` and `?/deleteTraining` endpoints. For data fetching Svelte's `?/load` endpoint is used. The endpoints use a repository in order to read and write data from the database. This allows for abstraction and hiding of the detailed persistence layer implementation in the endpoints. Should it ever come into play, this greatly reduces the complexity of migrating to another database technology.
+
+![Backend](./diagrams/backend.png)
+
+## 5.3 Complete System
+Combining the frontend and the backend, the complete system looks as shown in the diagram below.
+
+![Building-Blocks](./diagrams/building-blocks.png)
 
 ## 6. Runtime View
 
@@ -90,8 +116,8 @@ During development the following accumulated risks and technical debts where ide
 
 |Title|Description|Type|time estimate|
 |-----|-----------|----|-------------|
-
-TODO
+|Testing|Currently there is no automated testing done in Triathlog. Adding some components and e2e tests would greatly help cut down the time needed for manual testing and ensure componets work as expected after changes.|Issue|8h
+|Configurability|Currently available trainig disciplines are hardcoded and can't be changed. Allowing for configurability disciplines would help in better fitting Triathlog to individual athletes needs.|Feature|4h
 
 ## 12. Reflection
 With little to no prior background in web development, getting to know all these concepts of developing web applications on top of getting to know an entire framework came as a steep learning curve.
