@@ -80,21 +80,23 @@ Combining the frontend and the backend, the complete system looks as shown in th
 ![Building-Blocks](./diagrams/building-blocks.png)
 
 ## 6. Runtime View
+The runtime view below shows the sequence of events happening upon creating/updating/deleting (CRUD) trainings from Triathlog.
+
+![Runtime](./diagrams/runtime.png)
 
 ## 7. Deployment View
+Focusing on the sole development of the appliation no production ready deployment method (e.g Docker container) has been created yet.
 
-## 8. Crosscutting Concepts
+## 8. Architectural Decisions
 
-## 9. Architectural Decisions
-
-### 9.1 Custom event-calendar component
+### 8.1 Custom event-calendar component
 Searching for a prebuilt calendar component integrating neatly with the planned Triathlog functionality, not many options were found. The only real option,  [EventCalendar](https://github.com/vkurko/calendar) looked way too complex and feature-rich for the intended use case. On the other hand developing a custom component would require a considerable amount of time.
 
 **Decision**
 
 In the end the decision was made to develop a tailor-made event-calendar component, fitting the exact needs of Triathlog and therefore reducing overall complexity by only providing what's needed.
 
-### 9.2 Using JS native Date API
+### 8.2 Using JS native Date API
 Due to the nature of the project and its heavy reliance on date and time objects,
 multiple third-party packages like [date-and-time](https://www.npmjs.com/package/date-and-time) and [date-time](https://www.npmjs.com/package/date-time) were considered, enhancing JavaScript's Date API and thus making it easier to work with. 
 
@@ -102,7 +104,7 @@ multiple third-party packages like [date-and-time](https://www.npmjs.com/package
 
 In the end it was decided to stick with JavaScript's core Date API, keeping the event components less dependent at the cost of a slight compromise in developer experience. 
 
-## 10. Quality Requirements
+## 9. Quality Requirements
 The Triathlog application should comply with the following set of quality requirements:
 
 - Functionality should be validated using automated unit & integration tests.
@@ -111,7 +113,7 @@ The Triathlog application should comply with the following set of quality requir
 
 The quality requirements can also be found [here](./triathlog.md#quality-features)
 
-## 11. Risks & Technical Debt
+## 10. Risks & Technical Debt
 During development the following accumulated risks and technical debts where identified.
 
 |Title|Description|Type|time estimate|
@@ -119,7 +121,7 @@ During development the following accumulated risks and technical debts where ide
 |Testing|Currently there is no automated testing done in Triathlog. Adding some components and e2e tests would greatly help cut down the time needed for manual testing and ensure componets work as expected after changes.|Issue|8h
 |Configurability|Currently available trainig disciplines are hardcoded and can't be changed. Allowing for configurability disciplines would help in better fitting Triathlog to individual athletes needs.|Feature|4h
 
-## 12. Reflection
+## 11. Reflection
 With little to no prior background in web development, getting to know all these concepts of developing web applications on top of getting to know an entire framework came as a steep learning curve.
 
 Luckily, having a very extensive tutorial on [svelte.dev](https://svelte.dev/tutorial/svelte/welcome-to-svelte) helped me get going faster than initially anticipated. Whenever I had any problems, I could go back to the documentation and be assured there would be information found to solve my problem. In the rare occasion where this wasn't the case, there were some great blogs, Stackoverflow and some short explanations from ChatGPT at hand, eventually resolving the matter.
@@ -130,7 +132,7 @@ Another little annoyance was the proper definition of the zod schema for form va
 
 All in all, developing Triathlog was a very enjoyable project for me to work on. I got to know many new concepts and technologies, which I hopefully can put to use again in future. I envision continuing working on Triathlog, making it a viable planning tool towards my goal of completing an [Ironman 70.3](https://en.wikipedia.org/wiki/Ironman_70.3) in 2026.
 
-## 13. Glossary
+## 12. Glossary
 |Abbrevation|Description|
 |-----------|-----------|
 |SQL| Structured Query Language|

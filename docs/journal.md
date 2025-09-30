@@ -17,3 +17,4 @@ This journal logs all efforts torwards bringing the triathlog to life.
 |27.09.2025| - Refactoring event-calendar and dialog <br /> - Implement edit training feature | 6h
 |28.09.2025| - Refactoring main page <br /> - Enhance error respones with sonner <br /> - Add delete functionality <br /> - Add mark as done functionality | 7h 
 |29.09.2025| - Documentation|3h
+|30.09.2025| - Documentation|1h
