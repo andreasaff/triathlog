@@ -1,22 +1,20 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import Dialog from '$lib/components/custom/dialog/dialog.svelte';
 	import type { Event } from '$lib/components/custom/event-calendar/event';
 	import EventCalendar from '$lib/components/custom/event-calendar/event-calendar.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
+	import { Checkbox } from '$lib/components/ui/checkbox';
 	import * as Form from '$lib/components/ui/form';
 	import * as Select from '$lib/components/ui/select';
 	import { Textarea } from '$lib/components/ui/textarea';
+	import { config } from '$lib/config/config';
 	import { getTimeIntervalls, type Time } from '$lib/datetime';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { toast, Toaster } from 'svelte-sonner';
 	import { superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import type { PageData } from './$types';
 	import { trainingFormSchema } from './schema';
-	import type { SubmitFunction } from '@sveltejs/kit';
-	import { enhance } from '$app/forms';
-	import { toast, Toaster } from 'svelte-sonner';
-	import FormButton from '$lib/components/ui/form/form-button.svelte';
-	import { Field } from 'formsnap';
-	import { Checkbox } from '$lib/components/ui/checkbox';
 
 	let { data }: { data: PageData } = $props();
 
@@ -38,15 +36,20 @@
 
 	// the events passed down to the calendar component
 	let events: Event[] = $derived(
-		data.trainings.map((t) => ({
-			id: t.id,
-			title: t.type,
-			date: t.date,
-			startMin: t.startMin,
-			durationMin: t.durationMin,
-			description: t.description ? t.description : undefined,
-			isCompleted: t.isCompleted
-		}))
+		data.trainings.map((t) => {
+			const configItem = config.find((c) => c.type === t.type);
+			return {
+				id: t.id,
+				title: t.type,
+				date: t.date,
+				startMin: t.startMin,
+				durationMin: t.durationMin,
+				description: t.description ? t.description : undefined,
+				isCompleted: t.isCompleted,
+				background: configItem?.background,
+				border: configItem?.border
+			};
+		})
 	);
 
 	// starttimes and durations for dropdown
@@ -74,9 +77,7 @@
 	$effect(() => {
 		$formData.startTime = event?.startMin ? String(event.startMin) : '0';
 		$formData.duration = event?.durationMin ? String(event.durationMin) : '60';
-		$formData.type = event?.title
-			? (event.title as 'Running' | 'Cycling' | 'Swimming' | 'Strength')
-			: 'Running'; //TODO: FIX THIS (potential for casting failure!)
+		$formData.type = event?.title ? event.title : '';
 		$formData.description = event?.description ? event.description : '';
 		$formData.isCompleted = event?.isCompleted ? 'true' : 'false';
 	});
@@ -142,10 +143,9 @@
 								{$formData.type ? $formData.type : 'Select a tranings type...'}
 							</Select.Trigger>
 							<Select.Content>
-								<Select.Item value="Running" label="Running" />
-								<Select.Item value="Cycling" label="Cycling" />
-								<Select.Item value="Swimming" label="Swimming" />
-								<Select.Item value="Strength" label="Strength" />
+								{#each data.config as disciplin}
+									<Select.Item value={disciplin.type} label={disciplin.type} />
+								{/each}
 							</Select.Content>
 						</Select.Root>
 					{/snippet}

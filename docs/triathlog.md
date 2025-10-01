@@ -78,6 +78,13 @@ As a user, I want to see some stats about my planned and completed training bloc
 - Stats include the already completed number of training sessions for the week
 - Stats include already completed training time for the week
 
+### Story 8 - Configurability (_Could_)
+As a user, I want to be able to configure the application to my needs
+
+**Acceptance Criteria**
+- User can add additional training types. e.g. Mobility
+- User can define the color scheme in which the training session should be represented in.
+
 ## Quality Features
 - Functionality should be validated using automated unit & integration tests.
 - The solution should be portable (locally runnable on every desktop)

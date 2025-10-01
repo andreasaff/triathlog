@@ -3,7 +3,7 @@ import { db } from '../index';
 import { training } from '../schema';
 
 // C
-export async function createTraining(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', date: Date, startMin: number, durationMin: number, description?: string, isCompleted?: boolean): Promise<Training> {
+export async function createTraining(id: string, type: string, date: Date, startMin: number, durationMin: number, description?: string, isCompleted?: boolean): Promise<Training> {
     const result = await db.insert(training).values({
         id: id,
         type: type,
@@ -17,7 +17,7 @@ export async function createTraining(id: string, type: 'Running' | 'Cycling' | '
 }
 
 // U
-export async function updateTrainingById(id: string, type: 'Running' | 'Cycling' | 'Swimming' | 'Strength', startMin: number, durationMin: number, description?: string, isCompleted?: boolean): Promise<Training> {
+export async function updateTrainingById(id: string, type: string, startMin: number, durationMin: number, description?: string, isCompleted?: boolean): Promise<Training> {
     const result = await db.update(training).set({
         type: type,
         startMin: startMin,

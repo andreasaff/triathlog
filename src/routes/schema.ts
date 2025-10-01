@@ -1,13 +1,16 @@
 import * as z from 'zod';
+import { config } from '$lib/config/config';
 
 const MAX_DESCRIPTION_LENGTH = 255;
 
+const trainingTypes = config.map(c => c.type) as [string, ...string[]];
+
 export const trainingFormSchema = z.object({
     id: z.string().trim().uuid().optional(),
-    date: z.string().trim(), //todo security
+    date: z.string().trim(),
     startTime: z.string().trim().min(1, "Invalid starttime"),
     duration: z.string().trim().min(1, "Invalid duration"),
-    type: z.enum(['Running', 'Cycling', 'Swimming', 'Strength']),
+    type: z.enum(trainingTypes),
     description: z.string().trim().max(MAX_DESCRIPTION_LENGTH, `Description may not exceeed ${MAX_DESCRIPTION_LENGTH} characters`).optional(),
     isCompleted: z.string().trim().default("false"),
 }).refine(schema => {

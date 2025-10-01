@@ -6,4 +6,6 @@ export interface Event {
     durationMin: number;
     description?: string;
     isCompleted?: boolean;
+    background?: string;
+    border?: string;
 }

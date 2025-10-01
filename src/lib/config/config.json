@@ -1,0 +1,22 @@
+[
+    {
+        "type": "Running",
+        "background": "#FF8C004D",
+        "border": "#FF8C00"
+    },
+    {
+        "type": "Cycling",
+        "background": "#32CD324D",
+        "border": "#32CD32"
+    },
+    {
+        "type": "Swimming",
+        "background": "#1E90FF4D",
+        "border": "#1E90FF"
+    },
+    {
+        "type": "Strength",
+        "background": "#9932CC4D",
+        "border": "#9932CC"
+    }
+]

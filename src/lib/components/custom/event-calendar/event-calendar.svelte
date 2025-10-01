@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatDigitalTime, formatDigitalTimeByMinutes } from '$lib/datetime';
 	import type { Event } from './event';
-	import { getDateOfDay, moveWeek } from './event-calendar';
+	import { getDateOfDay, moveWeek, isValidHex } from './event-calendar';
 	import EventCalendarHeader from './event-calendar-header.svelte';
 	import EventCalendarNav from './event-calendar-nav.svelte';
 
@@ -70,6 +70,8 @@
 						top: {event.startMin}px; 
 						height: {event.durationMin}px;
 						border-left-style: {event.isCompleted ? 'solid' : 'dotted'};
+						background: {event.background && isValidHex(event.background) ? event.background : '#007bff4D'};
+						border-left-color: {event.border && isValidHex(event.border) ? event.border : '#007bff'};
 					"
 				>
 					{event.title} <br />
@@ -121,8 +123,7 @@
 		position: absolute;
 		left: 4px;
 		right: 4px;
-		background: rgba(0, 128, 255, 0.3);
-		border-left: 4px solid #007bff;
+		border-left: 4px solid;
 		padding: 4px;
 		font-size: 12px;
 		border-radius: 3px;

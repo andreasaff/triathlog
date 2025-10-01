@@ -10,6 +10,8 @@ Out of personal need an interest, I opted for the latter, developing a traning p
 ## 1.2 Scope
 All planned features in this project were documented as user stories, which were then prioritized according to the [MoSCoW](https://en.wikipedia.org/wiki/MoSCoW_method) method.
 
+> Note: User story 8 was added during the development process, as I found it to be a quite important aspect in personal usage of Triathlog. Currently configuration options are very basic and can only be done at build time. Configuration options via GUI were treated out of scope but could be added in future versions.
+
 Nr|Title|Priority|Status
 --|-----|--------|------
 1|Add training block|_Must_|✅
@@ -19,6 +21,7 @@ Nr|Title|Priority|Status
 5|Update existing training blocks|_Could_|✅
 6|Recurring Training Blocks|_Could_|❌
 7|Stats|_Could_|❌
+8|Configurability|_Could_|🔄
 
 A detailed description of the user stories can be found [here](./triathlog.md#requirements)
 
@@ -137,4 +140,3 @@ All in all, developing Triathlog was a very enjoyable project for me to work on.
 |-----------|-----------|
 |SQL| Structured Query Language|
 |ORM| Object Relation Mapping|
-

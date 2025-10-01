@@ -1,12 +1,11 @@
+import { config } from '$lib/config/config';
 import { createTraining, deleteTrainingById, getAllTraining, getTrainingById, getTraningByDate, updateTrainingById } from '$lib/server/db/queries/traning';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 import type { Actions, PageServerLoad } from './$types';
 import { trainingFormSchema } from './schema';
-import { validate as uuidValidate } from 'uuid';
-import { fromDate } from '@internationalized/date';
 
 
 export const load: PageServerLoad = async () => {
@@ -14,10 +13,13 @@ export const load: PageServerLoad = async () => {
     let form = await superValidate(zod(trainingFormSchema))
 
     return {
+        config: config,
         trainings: trainings,
         form: form
     };
 };
+
+const OVERLAPMESSAGE = 'Training overlaps with an already planned one';
 
 const serverTrainingFormSchema = trainingFormSchema.superRefine(async (schema, ctx) => {
     const startMin = parseInt(schema.startTime)
@@ -32,12 +34,12 @@ const serverTrainingFormSchema = trainingFormSchema.superRefine(async (schema, c
     if (hasOverlap) {
         ctx.addIssue({
             code: 'custom',
-            message: 'Training overlaps with an already planned one',
+            message: OVERLAPMESSAGE,
             path: ['startTime'],
         })
         ctx.addIssue({
             code: 'custom',
-            message: 'Training overlaps with an already planned one',
+            message: OVERLAPMESSAGE,
             path: ['duration'],
         })
     }

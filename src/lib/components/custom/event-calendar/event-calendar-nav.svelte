@@ -3,7 +3,6 @@
 	let { lastWeek, currentWeek, nextWeek, date } = $props();
 </script>
 
-<!-- <div class="flex items-center justify-between"> -->
 <div class="navigation">
 	<div>
 		<Button variant="outline" size="icon" onclick={lastWeek}>&lt;</Button>
