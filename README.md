@@ -1,5 +1,5 @@
 # Triathlog
-A simple trainings planner for triathletes.
+A simple training planner for triathletes.
 
 ![add-training](./docs/images/add-training.png)
 
