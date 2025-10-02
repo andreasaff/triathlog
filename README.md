@@ -1,9 +1,12 @@
 # Triathlog
 A simple trainings planner for triathletes.
 
+![add-training](./docs/images/add-training.png)
+
 ## Documentation
 - [Requirements](./docs/triathlog.md) </br>
 - [Documentation](./docs/documentation.md) </br>
+- [Images](./docs/images/)
 - [Journal](./docs/journal.md)
 
 ## Developing
