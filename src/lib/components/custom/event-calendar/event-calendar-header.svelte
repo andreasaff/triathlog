@@ -2,10 +2,10 @@
 	let { dayDates } = $props();
 </script>
 
-<div class="header">
+<div class="header" data-testid="calendar-header">
 	<div></div>
 	{#each dayDates as dayDate}
-		<div>
+		<div data-testid="calendar-header-day">
 			{dayDate.toLocaleDateString('en-US', { weekday: 'short' })}<br />
 			{dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
 		</div>

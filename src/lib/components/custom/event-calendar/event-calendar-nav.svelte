@@ -3,7 +3,7 @@
 	let { lastWeek, currentWeek, nextWeek, date } = $props();
 </script>
 
-<div class="navigation">
+<div class="navigation" data-testid="calendar-nav">
 	<div>
 		<Button variant="outline" size="icon" onclick={lastWeek}>&lt;</Button>
 		<Button variant="outline" onclick={currentWeek}>Current Week</Button>

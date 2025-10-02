@@ -31,7 +31,7 @@
 	date={currentWeeksStartDate}
 />
 <EventCalendarHeader {dayDates} />
-<div class="calendar">
+<div class="calendar" data-testid="calendar">
 	<!-- the time column -->
 	<div class="time-column">
 		{#each hours as hour}
@@ -47,6 +47,7 @@
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					class="day-cell"
+					data-testid="calendar-day-cell"
 					onclick={() =>
 						onEventClick({
 							date: day,
@@ -66,6 +67,7 @@
 							...event
 						})}
 					class="event"
+					data-testid="calendar-event"
 					style="
 						top: {event.startMin}px; 
 						height: {event.durationMin}px;
