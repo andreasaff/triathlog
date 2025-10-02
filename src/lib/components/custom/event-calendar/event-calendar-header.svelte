@@ -20,6 +20,9 @@
 		background: #f8f8f8;
 		border-bottom: 1px solid #ccc;
 		padding: 4px 0;
+		position: sticky;
+		top: 0;
+		z-index: 10;
 	}
 
 	.header div {
