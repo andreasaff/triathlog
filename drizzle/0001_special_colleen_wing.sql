@@ -1,1 +1,0 @@
-ALTER TABLE `traning` ADD `end` text;

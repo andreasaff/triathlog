@@ -1,11 +1,11 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a09b845c-3e2d-4a4e-8cf5-ca2154dd916a",
+  "id": "e8efe2cf-fd31-4081-bd1f-9f4ecf30d866",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "traning": {
-      "name": "traning",
+    "training": {
+      "name": "training",
       "columns": {
         "id": {
           "name": "id",
@@ -21,15 +21,22 @@
           "notNull": true,
           "autoincrement": false
         },
-        "start": {
-          "name": "start",
+        "date": {
+          "name": "date",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "duration": {
-          "name": "duration",
+        "start_min": {
+          "name": "start_min",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "duration_min": {
+          "name": "duration_min",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -42,8 +49,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "iscompleted": {
-          "name": "iscompleted",
+        "is_completed": {
+          "name": "is_completed",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,

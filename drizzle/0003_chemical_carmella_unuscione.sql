@@ -1,1 +1,0 @@
-ALTER TABLE `traning` RENAME TO `training`;

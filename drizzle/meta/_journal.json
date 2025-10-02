@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1758367843296,
-      "tag": "0000_special_electro",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1758566051879,
-      "tag": "0001_special_colleen_wing",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1758657013712,
-      "tag": "0002_normal_mulholland_black",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1758965483217,
-      "tag": "0003_chemical_carmella_unuscione",
+      "when": 1759390059728,
+      "tag": "0000_steady_sheva_callister",
       "breakpoints": true
     }
   ]
