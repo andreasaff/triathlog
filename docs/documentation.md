@@ -5,12 +5,12 @@
 This project was conducted as part of the [WEBLAB](https://github.com/web-programming-lab/web-programming-lab-projekt) module at HSLU, acting as a greenfield project for learning and deepening knowledge in the realms of web development.
 
 Students were give the option to implement a tech radar or bring their own project ideas to life.
-Out of personal need an interest, I opted for the latter, developing a traning planner specifically for triathletes.
+Out of personal need an interest, I opted for the latter, developing a training planner specifically for triathletes.
 
 ## 1.2 Scope
 All planned features in this project were documented as user stories, which were then prioritized according to the [MoSCoW](https://en.wikipedia.org/wiki/MoSCoW_method) method.
 
-> Note: User story 8 was added during the development process, as I found it to be a quite important aspect in personal usage of Triathlog. Currently configuration options are very basic and can only be done at build time. Configuration options via GUI were treated out of scope but could be added in future versions.
+> Note: User story 8 was added during the development process, as I found it to be a quite important for my personal usage of Triathlog. Currently configuration options are very basic and can only be set at build time. Configuration options via GUI were treated as out of scope but could be added in future versions.
 
 Nr|Title|Priority|Status
 --|-----|--------|------
@@ -21,7 +21,7 @@ Nr|Title|Priority|Status
 5|Update existing training blocks|_Could_|✅
 6|Recurring Training Blocks|_Could_|❌
 7|Stats|_Could_|❌
-8|Configurability|_Could_|🔄
+8|Configurability|_Could_|✅
 
 A detailed description of the user stories can be found [here](./triathlog.md#requirements)
 
@@ -88,7 +88,7 @@ The runtime view below shows the sequence of events happening upon creating/upda
 ![Runtime](./diagrams/runtime.png)
 
 ## 7. Deployment View
-Focusing on the sole development of the appliation no production ready deployment method (e.g Docker container) has been created yet.
+Triathlog is deployed using a container. The project includes a [Dockerfile](../Dockerfile) allowing users to build there own image or use the latest image hosted on the GitHub container registry. For more information running Triathlog, see [README](../README.md)
 
 ## 8. Architectural Decisions
 
@@ -121,8 +121,8 @@ During development the following accumulated risks and technical debts where ide
 
 |Title|Description|Type|time estimate|
 |-----|-----------|----|-------------|
-|Testing|Currently there is no automated testing done in Triathlog. Adding some components and e2e tests would greatly help cut down the time needed for manual testing and ensure componets work as expected after changes.|Issue|8h
-|Configurability|Currently available trainig disciplines are hardcoded and can't be changed. Allowing for configurability disciplines would help in better fitting Triathlog to individual athletes needs.|Feature|4h
+|Testing|Currently there is only limited automated testing done in the Triathlog project. Adding some additional component and e2e tests would greatly help cut down the time needed for manual testing and ensure components work as expected after changes.|Issue|8h
+|Configurability|At the moment configurability of Triathlog is limited to adjusting a JSON configuration file inside the projects folder. Adjusting the configuration, requires a rebuild and redeploy of the application container. For better usability, end users should be able to configure the application via the UI|Feature|6h
 
 ## 11. Reflection
 With little to no prior background in web development, getting to know all these concepts of developing web applications on top of getting to know an entire framework came as a steep learning curve.

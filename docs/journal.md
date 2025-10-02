@@ -18,3 +18,6 @@ This journal logs all efforts torwards bringing the triathlog to life.
 |28.09.2025| - Refactoring main page <br /> - Enhance error respones with sonner <br /> - Add delete functionality <br /> - Add mark as done functionality | 7h 
 |29.09.2025| - Documentation|3h
 |30.09.2025| - Documentation|1h
+|01.10.2025| - Add configurability feature <br /> - Documentation <br />|3h
+|02.10.2025| - Testing <br /> - Release engineering <br /> - Final submission|5h
+| | **Total** | **69h**
