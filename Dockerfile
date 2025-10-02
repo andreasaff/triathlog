@@ -11,7 +11,7 @@ WORKDIR /app
 VOLUME ["/db"]
 ENV DATABASE_URL=/db/local.db
 ENV PORT=3000
-ENV ORIGIN=http://0.0.0.0:3000
+ENV ORIGIN=http://localhost:3000
 COPY --from=builder /app/build build/
 COPY --from=builder /app/node_modules node_modules/
 COPY --from=builder /app/drizzle drizzle/

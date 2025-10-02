@@ -3,6 +3,10 @@ docs/
 .direnv/
 build/
 e2e/
+todo
+*.db
+test-results/
+README.md
 
 Dockerfile
 .dockerignore
