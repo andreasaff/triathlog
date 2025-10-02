@@ -11,7 +11,7 @@ export const trainingFormSchema = z.object({
     startTime: z.string().trim().min(1, "Invalid starttime"),
     duration: z.string().trim().min(1, "Invalid duration"),
     type: z.enum(trainingTypes),
-    description: z.string().trim().max(MAX_DESCRIPTION_LENGTH, `Description may not exceeed ${MAX_DESCRIPTION_LENGTH} characters`).optional(),
+    description: z.string().max(MAX_DESCRIPTION_LENGTH, `Description may not exceeed ${MAX_DESCRIPTION_LENGTH} characters`).optional(),
     isCompleted: z.string().trim().default("false"),
 }).refine(schema => {
     const start = parseInt(schema.startTime, 10);

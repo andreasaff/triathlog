@@ -59,7 +59,7 @@ export const actions: Actions = {
         const isCompleted = (formData.isCompleted === 'true')
 
         if (!formData.id) {
-            createTraining(uuidv4(), formData.type, date, parseInt(formData.startTime), parseInt(formData.duration), formData.description, isCompleted)
+            createTraining(uuidv4(), formData.type, date, parseInt(formData.startTime), parseInt(formData.duration), formData.description?.trim(), isCompleted)
             return { form };
         }
 
@@ -69,7 +69,7 @@ export const actions: Actions = {
             return fail(404);
         }
 
-        updateTrainingById(formData.id, formData.type, parseInt(formData.startTime), parseInt(formData.duration), formData.description, isCompleted)
+        updateTrainingById(formData.id, formData.type, parseInt(formData.startTime), parseInt(formData.duration), formData.description?.trim(), isCompleted)
 
         return { form };
     },

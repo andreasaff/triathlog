@@ -10,8 +10,8 @@ export async function createTraining(id: string, type: string, date: Date, start
         date: date,
         startMin: startMin,
         durationMin: durationMin,
-        description,
-        isCompleted
+        description: description?.trim(),
+        isCompleted: isCompleted
     }).returning();
     return result[0];
 }
@@ -22,7 +22,7 @@ export async function updateTrainingById(id: string, type: string, startMin: num
         type: type,
         startMin: startMin,
         durationMin: durationMin,
-        description: description,
+        description: description?.trim(),
         isCompleted: isCompleted
     }).where(eq(training.id, id)).returning();
     return result[0];
